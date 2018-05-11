@@ -1,0 +1,65 @@
+
+#
+# inner vars
+# __file__: this configuration file complete path forward slash (/)
+# __directory__: directory of this file
+#
+name: node
+tool: cmake
+msvs: 2017
+arch: x86_64
+steps:
+  - fetch
+  - configure
+  - make
+  - install
+
+projects:
+  - zlib:
+      version: 1.2.11
+      origin:
+        tarball: http://www.zlib.net/zlib-${version}.tar.xz
+        dir: zlib-${version}
+
+  - libtiff:
+      version: 4.0.9
+      origin:
+        tarball: ftp://download.osgeo.org/libtiff/tiff-${version}.tar.gz
+        dir: tiff-${version}
+
+  - openjpeg:
+      version: 2.3.0
+      origin:
+        tarball: https://github.com/uclouvain/openjpeg/archive/v${version}.tar.gz
+        dir: openjpeg-${version}
+
+  - libpng:
+      version: 1.6.35beta01
+      origin:
+          tarball: https://github.com/glennrp/libpng/archive/v${version}.tar.gz
+          dir: libpng-${version}
+
+  - leptonica:
+      version: 1.76.0
+      origin:
+        tarball: http://www.leptonica.com/source/leptonica-${version}.tar.gz
+        dir: leptonica-${version}
+
+  - libtesseract:
+      version: 4.0.0-beta.1.1
+      origin:
+        git: https://github.com/tesseract-ocr/tesseract.git
+        commit: 45a65463247cfc6856a186341c6918da0b1f44be
+
+  - tesseract-node:
+      version: 0.0.1
+      location:  ${__directory__}
+      build_dir: ${__directory__}/build/tesseract-node-${platform}-${arch}
+      steps:
+        - configure
+        - make
+        - install
+#     configure:
+#       - .ENVIRONVARS:
+#         PKG_CONFIG_PATH: ${__directory__}/dist/${platform}/${arch}/lib/pkgconfig
+
