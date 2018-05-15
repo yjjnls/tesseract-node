@@ -60,6 +60,7 @@ projects:
         - make
         - install
       configure:
-        - .ENVIRONVARS:
-          PKG_CONFIG_PATH: ${install_prefix}/lib/pkgconfig
+        - .enviroment:
+           PKG_CONFIG_PATH: 
+             path: ${install_prefix}/lib/pkgconfig
 

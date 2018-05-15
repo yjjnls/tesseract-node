@@ -12,4 +12,4 @@ cam_find_pkgconfig(0.29.1)
 
 ##add_subdirectory( static )
 add_subdirectory( plugin )
-add_subdirectory( test   )
+#add_subdirectory( test   )

@@ -6,10 +6,18 @@ file(GLOB_RECURSE  _SOURCES
 
 cam_project_group( _SOURCES ${CMAKE_CURRENT_SOURCE_DIR})
 
+cam_find_pkgconfig( 0.29.1 )
+pkg_check_modules(_MODULES  REQUIRED
+                   lept
+                   tesseract
+                )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_library(tesseract-plugin  SHARED ${LWS_SOURCES} )
-target_link_libraries(tesseract-plugin ${GST_MODULES_LIBRARIES} )
+include_directories(${_MODULES_INCLUDE_DIRS}) 
+link_directories   (${_MODULES_LIBRARY_DIRS})
+
+add_library(tesseract-plugin  SHARED ${_SOURCES} )
+target_link_libraries(tesseract-plugin ${_MODULES_LIBRARIES} )
 
 
 set(instd ${CMAKE_HOME_DIRECTORY}/bin)

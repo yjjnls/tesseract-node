@@ -8,16 +8,10 @@
 #include "./plugin_interface.h"
 
 
-#define __VERSION__ "0.1.1"
+#define __VERSION__ "0.0.1"
 
-static WebStreamer* _webstreamer = NULL;
-WebStreamer* get_webstreamer_instance() {
-    return _webstreamer;
-}
-void set_webstreamer_instance(WebStreamer* inst) {
-    _webstreamer = inst;
-}
-
+#define const_error_msg(type, msg) \
+    "{\"type\": \"" type "\", \"message\": \"" msg "\"}"
 
 static void init(const void*  iface,
     const void*               context,
@@ -26,14 +20,6 @@ static void init(const void*  iface,
 {
     plugin_interface_t* self = (plugin_interface_t *)iface;
 
-    if (_webstreamer)
-    {
-        plugin_buffer_t err;
-        plugin_buffer_string_set(&err, const_error_msg("init",
-            "webstreamer not permit to create multi instances."));
-        callback(self, context, 1, &err);
-        return;
-    }
 
     nlohmann::json j;
     if (data)
@@ -50,10 +36,6 @@ static void init(const void*  iface,
             return;
         }
     }
-    _webstreamer = new WebStreamer(self);
-    Promise* promise = new Promise((void*)self,
-        context, callback, nlohmann::json(), j);
-    _webstreamer->Initialize(promise);
     return;
 }
 
@@ -65,23 +47,6 @@ static void call(const void* iface,
     plugin_callback_fn        callback)
 {
     plugin_interface_t* self = (plugin_interface_t *)iface;
-    if (!_webstreamer)
-    {
-        plugin_buffer_t err;
-        plugin_buffer_string_set(&err, const_error_msg("call",
-            "webstreamer not constructed."));
-        callback(self, context, 1, &err);
-        return;
-    }
-
-    if (WebStreamer::State::RUNNING != _webstreamer->state())
-    {
-        plugin_buffer_t err;
-        plugin_buffer_string_set(&err, const_error_msg("call",
-            "trying call method befor running state.."));
-        callback(self, context, 1, &err);
-        return;
-    }
 
     if (!meta || !meta->data || !meta->size)
     {
@@ -95,7 +60,7 @@ static void call(const void* iface,
     try {
         const char* begin = (const char*)meta->data;
         const char* end = begin + meta->size;
-
+    
         jmeta = nlohmann::json::parse(begin, end);
     }
     catch (std::exception&) {
@@ -105,7 +70,7 @@ static void call(const void* iface,
         callback(self, context, 1, &err);
         return;
     }
-
+    
     nlohmann::json jdata;
     try {
         if (data && data->data && data->size) {
@@ -122,10 +87,7 @@ static void call(const void* iface,
         return;
     }
 
-    Promise* promise = new Promise((void*)self,
-        context, callback, jmeta, jdata);
-    _webstreamer->Call(promise);
-    promise = nullptr;
+
 }
 
 static void terminate(const void* iface,
@@ -134,8 +96,6 @@ static void terminate(const void* iface,
 {
     plugin_interface_t* self = (plugin_interface_t *)iface;
 
-    Promise* promise = new Promise((void*)self, context, callback);
-    _webstreamer->Terminate(promise);
 }
 
 PLUGIN_INTERFACE(__VERSION__, init, call, terminate)
