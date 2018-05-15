@@ -1,0 +1,11 @@
+dist
+build
+eggs
+parts
+bin
+var
+.coverage
+.tox
+.cache
+.vscode
+__pycache__

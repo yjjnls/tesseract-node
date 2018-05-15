@@ -24,7 +24,7 @@ projects:
   - libtiff:
       version: 4.0.9
       origin:
-        tarball: ftp://download.osgeo.org/libtiff/tiff-${version}.tar.gz
+        tarball: http://download.osgeo.org/libtiff/tiff-${version}.tar.gz
         dir: tiff-${version}
 
   - openjpeg:
