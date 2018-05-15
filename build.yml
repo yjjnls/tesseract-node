@@ -59,7 +59,7 @@ projects:
         - configure
         - make
         - install
-#     configure:
-#       - .ENVIRONVARS:
-#         PKG_CONFIG_PATH: ${__directory__}/dist/${platform}/${arch}/lib/pkgconfig
+      configure:
+        - .ENVIRONVARS:
+          PKG_CONFIG_PATH: ${install_prefix}/lib/pkgconfig
 
