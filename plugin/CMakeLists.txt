@@ -27,13 +27,15 @@ else()
 	set(instd ${instd}/linux )
 endif()
 
-if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL AMD64 )
+if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL AMD64 OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL x86_64)
     set(instd "${instd}/x64")
 else()
 	set(instd "${instd}/x86")
 endif()
+message ("${instd}")
 
-install(TARGETS tesseract-plugin RUNTIME DESTINATION ${instd})
+install(TARGETS tesseract-plugin RUNTIME DESTINATION ${instd}
+                                 LIBRARY DESTINATION ${instd})
 
 #set(npm npm)
 #if(MSVC)

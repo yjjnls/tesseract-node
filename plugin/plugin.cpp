@@ -31,6 +31,7 @@ static void init(const void *iface,
 
     api = new tesseract::TessBaseAPI();
     api->Init(NULL, "eng");
+    api->SetVariable("tessedit_char_whitelist", "0123456789:.");
     return;
 }
 
@@ -98,7 +99,13 @@ static void call(const void *iface,
     api->SetImage(image);
     // Get OCR result
     outText = api->GetUTF8Text();
-    std::string res(outText, strlen(outText) - 1);
+    size_t text_size = 0;
+    for (int i = 0; i < strlen(outText); ++i)
+    {
+        if (outText[i] != '\n')
+            ++text_size;
+    }
+    std::string res(outText, text_size);
     // printf("OCR output: %s\n", outText);
 
     delete[] outText;
