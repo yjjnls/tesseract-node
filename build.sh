@@ -1,21 +1,5 @@
 #! /bin/bash
 
-mkdir -p build
-
-pushd build
-
-cmake ..
-
-make
-make install
-
-
-popd
-
-# https://tutorialforlinux.com/2017/02/23/how-to-install-libtiff4-libtiff4-dev-for-ubuntu-16-04-xenial-gnulinux-easy-guide/
-
-# https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux
-
 sudo su -c "echo 'deb [trusted=yes] http://cz.archive.ubuntu.com/ubuntu precise main universe' \
  >> /etc/apt/sources.list.d/extra.list"
 sudo apt update
@@ -36,3 +20,21 @@ sudo apt-get install libpango1.0-dev
 sudo apt-get install libcairo2-dev
 
 sudo apt-get install libleptonica-dev
+
+mkdir -p build
+
+pushd build
+
+cmake ..
+
+make
+make install
+
+
+popd
+
+# https://tutorialforlinux.com/2017/02/23/how-to-install-libtiff4-libtiff4-dev-for-ubuntu-16-04-xenial-gnulinux-easy-guide/
+
+# https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux
+
+
